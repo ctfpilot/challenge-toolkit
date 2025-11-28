@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ctfpilot/challenge-schema/refs/heads/main/schema.json
+
+enabled: true
+name: "Example Challenge"
+slug: "example-challenge"
+author: "John Smith"
+category: "web"
+difficulty: "easy"
+type: "static"
+flag: "ctfpilot{flag}"

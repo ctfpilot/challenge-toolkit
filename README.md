@@ -3,6 +3,28 @@
 Challenge Toolkit for CTF Pilot.  
 Allows for bootstrapping challenges and pipeline actions on challenges.
 
+### Code gen
+
+```sh
+datamodel-codegen \
+  --url https://raw.githubusercontent.com/ctfpilot/challenge-schema/refs/heads/main/schema.json \
+  --output ./models/challenge.py \
+  --use-annotated \
+  --use-generic-container-types \
+  --use-field-description \
+  --output-model-type pydantic_v2.BaseModel \
+  --set-default-enum-member
+
+datamodel-codegen \
+  --url https://raw.githubusercontent.com/ctfpilot/page-schema/refs/heads/main/schema.json \
+  --output ./models/page.py \
+  --use-annotated \
+  --use-generic-container-types \
+  --use-field-description \
+  --output-model-type pydantic_v2.BaseModel \
+  --set-default-enum-member
+```
+
 ## Contributing
 
 We welcome contributions of all kinds, from **code** and **documentation** to **bug reports** and **feedback**!
