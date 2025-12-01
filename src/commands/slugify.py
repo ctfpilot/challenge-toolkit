@@ -18,7 +18,7 @@ class Args:
         else:
             self.parser = argparse.ArgumentParser(description="Slugify a string for use in challenge slug")
 
-        self.parser.add_argument("--name", help="Name to slugify", required=True)
+        self.parser.add_argument("name", help="Name to slugify", required=True)
     
     def parse(self):
         if self.subcommand:
