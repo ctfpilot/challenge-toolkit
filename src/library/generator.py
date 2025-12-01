@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .data import Challenge, Page
 from .utils import Utils
+from .config import CHALLENGE_SCHEMA
 
 class Generator:
     challenge: Challenge
@@ -180,9 +181,9 @@ This file should contain the steps to solve the challenge.""")
         # Create challenge file
         path = Path(self.path)
         path = path.joinpath(f"challenge.{format}")
-        content = self.challenge.str_yml("./../../../tools/schema/challenge-schema.json")
+        content = self.challenge.str_yml(CHALLENGE_SCHEMA)
         if format == "json":
-            content = self.challenge.str_json("./../../../tools/schema/challenge-schema.json")
+            content = self.challenge.str_json(CHALLENGE_SCHEMA)
         
         with open(path, "w") as f:            
             f.write(content)

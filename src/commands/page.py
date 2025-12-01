@@ -7,6 +7,7 @@ from datetime import datetime
 from library.utils import Utils
 from library.data import Page
 from library.generator import Generator
+from library.config import PAGE_SCHEMA
 
 class Args:
     args = None
@@ -18,12 +19,11 @@ class Args:
         if parent_parser:
             self.subcommand = True
             self.parser = parent_parser.add_parser("page", help="Render template for CTFd pages")
-            self.parser = parent_parser.add_parser("repo", help="GitHub repository for CTFd pages in the format 'owner/repo'")
         else:
             self.parser = argparse.ArgumentParser(description="Render template for CTFd pages")
 
         self.parser.add_argument("page", help="Page to render (directory for page - 'web/example')")
-        self.parser.add_argument("--repo", help="GitHub repository for CTFd pages in the format 'owner/repo'", default=os.getenv("GITHUB_REPOSITORY	", "ctfpilot/example"))
+        self.parser.add_argument("--repo", help="GitHub repository for CTFd pages in the format 'owner/repo'", default=os.getenv("GITHUB_REPOSITORY	", ""))
     
     def parse(self):
         if self.subcommand:
@@ -44,7 +44,11 @@ class Args:
             sys.exit(1)
 
         self.page = page
-        self.repo = self.args.repo or os.getenv("GITHUB_REPOSITORY", "ctfpilot/example")
+        self.repo = self.args.repo or os.getenv("GITHUB_REPOSITORY", "")
+        
+        if not self.repo or self.repo.strip() == "":
+            print("GitHub repository is required. Please provide it via the --repo argument or the GITHUB_REPOSITORY environment variable.")
+            sys.exit(1)
 
     def __getattr__(self, name):
         return getattr(self.args, name)
@@ -74,7 +78,7 @@ class PageRender:
         return content
     
     def get_template_content(self):
-        template_source = self.page.str_json("https://raw.githubusercontent.com/ctfpilot/page-schema/refs/heads/main/schema.json")
+        template_source = self.page.str_json(PAGE_SCHEMA)
 
         # Iterate over each line in the source, and indent it
         template_source_indented = "".join(["    " + line + "\n" for line in template_source.splitlines()])

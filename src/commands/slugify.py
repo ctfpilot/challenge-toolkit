@@ -8,7 +8,7 @@ from library.utils import Utils
 
 class Args:
     args = None
-    slug: str = None
+    slug: str = ""
     subcommand = False
     
     def __init__(self, parent_parser = None):
@@ -38,7 +38,7 @@ class Slugify:
         """
         Slugify a string for use in challenge slug.
         """
-        return Utils.slugify(name)
+        return Utils.slugify(name) or ""
 
 class SlugifyCommand:
     args = None

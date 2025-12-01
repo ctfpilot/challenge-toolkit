@@ -1,3 +1,11 @@
+from pathlib import Path
+
+# Default to the directory where the command is run from
+CHALLENGE_REPO_ROOT = Path.cwd()
+
+CHALLENGE_SCHEMA = "https://raw.githubusercontent.com/ctfpilot/challenge-schema/refs/heads/main/schema.json"
+PAGE_SCHEMA = "https://raw.githubusercontent.com/ctfpilot/page-schema/refs/heads/main/schema.json"
+
 CHALL_TYPES = [ "static", "shared", "instanced" ]
 DIFFICULTIES = [ "beginner", "easy", "easy-medium", "medium", "medium-hard","hard", "very-hard", "insane"]
 CATEGORIES = [ "web", "forensics", "rev", "crypto", "pwn", "boot2root", "osint", "misc", "blockchain", "mobile", "test" ]

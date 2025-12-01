@@ -3,25 +3,27 @@ from slugify import slugify
 import yaml
 import json
 
+from .config import CHALLENGE_REPO_ROOT
+
 class Utils:
     @staticmethod
-    def get_repo_dir():
-        return Path(__file__).resolve().parents[2]
+    def get_repo_dir() -> Path:
+        return CHALLENGE_REPO_ROOT
 
     @staticmethod
-    def get_challenges_dir():
+    def get_challenges_dir() -> Path:
         return Utils.get_repo_dir().joinpath('challenges')
     
     @staticmethod
-    def get_pages_dir():
+    def get_pages_dir() -> Path:
         return Utils.get_repo_dir().joinpath('pages')
     
     @staticmethod
-    def get_challenge_dir(category: str, slug: str):        
+    def get_challenge_dir(category: str, slug: str) -> Path:        
         return Utils.get_challenges_dir().joinpath(Utils.slugify(category) or "").joinpath(slug)
 
     @staticmethod
-    def get_page_dir(page: str):
+    def get_page_dir(page: str) -> Path:
         return Utils.get_pages_dir().joinpath(Utils.slugify(page) or "")
 
     @staticmethod
@@ -37,19 +39,19 @@ class Utils:
         return Utils.get_challenge_dir(category, slug).joinpath('k8s')
     
     @staticmethod
-    def get_k8s_page_dir(page: str):
+    def get_k8s_page_dir(page: str) -> Path:
         return Utils.get_page_dir(page).joinpath('k8s')
     
     @staticmethod
-    def get_challenge_render_dir(category: str, slug: str):
+    def get_challenge_render_dir(category: str, slug: str) -> Path:
         return Utils.get_k8s_dir(category, slug).joinpath('challenge')
     
     @staticmethod
-    def get_configmap_dir(category: str, slug: str):
+    def get_configmap_dir(category: str, slug: str) -> Path:
         return Utils.get_k8s_dir(category, slug).joinpath('config')
     
     @staticmethod
-    def get_template_dir():
+    def get_template_dir() -> Path:
         return Utils.get_repo_dir().joinpath('template')
         
     @staticmethod
