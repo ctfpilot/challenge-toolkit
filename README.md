@@ -1,7 +1,8 @@
 # CTF Pilot's Challenge Toolkit
 
-Challenge Toolkit for CTF Pilot.  
-Allows for bootstrapping challenges and pipeline actions on challenges.
+A comprehensive CLI toolkit for CTF challenge development, deployment, and management.
+
+The Challenge Toolkit streamlines the entire CTF challenge lifecycle, from bootstrapping new challenges with proper directory structures to building Docker images and generating Kubernetes deployment manifests. Built to work seamlessly with [CTF Pilot's infrastructure](https://github.com/ctfpilot), it enforces standardized schemas and automates repetitive tasks, letting you focus on creating great challenges instead of managing boilerplate.
 
 ## How to run
 
@@ -29,6 +30,14 @@ You can then run the tool using python:
 
 ```sh
 python challenge-toolkit/src/ctf.py <command> [arguments] [options]
+```
+
+In order to use `create`, `template`, and `page` you need to copy the deployment templates into the `template/` directory of your challenge repository (In acordance with the **[Template structure](#template-structure)** section).
+
+This can be done by running:
+
+```sh
+cp -r challenge-toolkit/template/ .
 ```
 
 ### Environment Variables
@@ -72,7 +81,7 @@ git submodule update --init --recursive
 
 ### Typical usage
 
-The tool is typically split up into three main parts:
+The tool is typically used in three scenarios:
 
 1. **Creating a new challenge** using the `create` command.  
    The `slugify` command may be used to create the slug for the challenge, based on the name.
@@ -236,10 +245,41 @@ python challenge-toolkit/src/ctf.py template <renderer> <challenge> [options]
 
 **Renderer Types:**
 
-- **`k8s`** - Generate Kubernetes deployment YAML files for the challenge
-- **`configmap`** - Generate ConfigMap containing challenge metadata and description
+- **`k8s`** - Generate Kubernetes deployment YAML files for the challenge.
+  
+  If the challenge is of type `instanced`, it will template from the `template/k8s.yml` file, into the `k8s/challenge/k8s.yml` file. It will wrap the challenge template into the `kube-ctf` deployment template.
+
+  If the challenge is of type `shared` or `static`, it will template from the `template/k8s.yml` file, into the `k8s/challenge/template/k8s.yml` file, along with a full helm chart located in `k8s/challenge/`.
+
+  It will template the following fields:
+  - `CHALLENGE_NAME` - Challenge slug
+  - `CHALLENGE_CATEGORY` - Challenge category
+  - `CHALLENGE_TYPE` - Challenge type
+  - `CHALLENGE_VERSION` - Challenge version
+  - `CHALLENGE_EXPIRES` - Expiry time in seconds
+  - `CHALLENGE_AVAILABLE_AT` - When the challenge becomes available
+  - `DOCKER_IMAGE` - Category and slug combined to docker image. Will not follow the format produced by the `pipeline` command.
+
+  Templating is done using `{{ VARIABLE_NAME }}` syntax.
+- **`configmap`** - Generate helm chart containing challenge metadata and description, which produces a ConfigMap for the [CTF Pilot's CTFd Manager](https://github.com/ctfpilot/ctfd-manager).
+  
+  This will render the `challenge-configmap.yml` from the global template directory, into the `k8s/config/templates/k8s.yml` file, along with a full helm chart located in `k8s/config/`.
+
+  It will template the following fields:
+  - `CHALLENGE_NAME` - Challenge slug
+  - `CHALLENGE_CATEGORY` - Challenge category
+  - `CHALLENGE_REPO` - GitHub repository in format `owner/repo`, uses the `--repo` option or `GITHUB_REPOSITORY` env variable
+  - `CHALLENGE_PATH` - Challenge path in format `challenges/<category>/<slug>`
+  - `CHALLENGE_TYPE` - Challenge instanced type
+  - `CHALLENGE_VERSION` - Challenge version
+  - `CHALLENGE_ENABLED` - Whether the challenge is enabled
+  - `HOST` - Hostname of challenge. Will be replaced with helm template variable `{{ .Values.kubectf.host }}`
+  - `CURRENT_DATE` - Current date in `%Y-%m-%d %H:%M:%S` format
+
+  Templating is done using `{{ VARIABLE_NAME }}` syntax.
 - **`clean`** - Remove all generated Kubernetes files from the `k8s/` directory
-- **`handout`** - Create a ZIP archive of files in the handout directory
+- **`handout`** - Create a ZIP archive of files in the handout directory.  
+  The created archive is stored in the `k8s/files/` directory as `<category>_<slug>.zip`. It will ignore the files `.gitkeep` and `.gitignore`.
 
 **Examples:**
 
@@ -388,7 +428,7 @@ The tools expect a specific directory structure, where challenges are stored in 
 Inside the `challenges` directory, challenges are divided into categories.  
 Each challenge is stored in its own directory, named identically to the challenge slug.
 
-Besides the `challenges` directory, there is also a `template` directory, which contains the base templates for kubernetes deployment files.
+Besides the `challenges` directory, there is a `template` directory, which contains the base templates for kubernetes deployment files.
 
 The structure is as follows:
 
@@ -413,15 +453,15 @@ The structure is as follows:
 └── <other files>
 ```
 
-*Pages may be split into their own repository, if desired.*
+*`pages` may be split into their own repository, if desired.*
 
 ### Challenge structure
 
 > [!TIP]
 > Challenge source code is located in the `src/` directory.  
-> The main files are `challenge.yml`, `description.md` and `README.md`, along with the `src/` directories.
+> The main files are `challenge.yml`, `description.md` and `README.md`.
 
-Each challenge is stored in its own directory, named after the challenge slug.
+Each challenge is stored in its own directory, named identically to the challenge slug.
 Within the challenge directory, there are several subdirectories and files that make up the challenge.
 
 The subdirectory structure of a challenge is as follows:
@@ -447,7 +487,7 @@ The subdirectory structure of a challenge is as follows:
 - `challenge.yml` contains the metadata for the challenge. This must be filled out by the challenge creator. Follows a very strict structure, which can be found in the schema file provided in the file.  
   The file may be replaced by a JSON file, as `challenge.json`.
 - `description.md` contains the description of the challenge. This is the text that is shown to the user, when they open the challenge. It should be written in markdown.
-- `README.md` contains the base idea and informationm of the challenge. May contain inspiration or other internal notes about the challenge. May also contain solution steps.
+- `README.md` contains the base idea and information of the challenge. May contain inspiration or other internal notes about the challenge. May also contain solution steps.
 - `version` contains the version of the challenge. This is automatically updated by the `pipeline` command. Contains a single number, which is the version number of the challenge.
 
 To learn more about the `challenge.yml` file, see the [CTF Pilot's Challenge Schema](https://github.com/ctfpilot/challenge-schema).
@@ -527,9 +567,9 @@ The following templates are required:
 - [kube-ctf](https://github.com/ctfpilot/kube-ctf) deployment template:
   - `instanced-k8s-challenge.yml`
 
-Configmap tempaltes are used to generate ConfigMaps for challenges and pages.  
-Challenge deployment templates are used to generate the Kubernetes deployment files for challenges.
-The `kube-ctf` deployment template is used to generate the deployment file for instanced challenges, when using the [kube-ctf](https://github.com/ctfpilot/kube-ctf) platform. Within this template, the challenge deployment tempalte is embedded.
+**Configmap templates** are used to generate ConfigMaps for challenges and pages.  
+**Challenge deployment templates** are used to generate the Kubernetes deployment files for challenges.
+The **`kube-ctf` deployment template** is used to generate the deployment file for instanced challenges, when using the [kube-ctf](https://github.com/ctfpilot/kube-ctf) platform. Within this template, the challenge deployment template is embedded.
 
 > [!NOTE]
 > Only instanced templates are currently generated. Shared templates are not yet supported.
