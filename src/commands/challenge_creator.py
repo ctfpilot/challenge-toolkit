@@ -60,6 +60,7 @@ class Args:
                     challenge.set_name(input("Name of the challenge: "))
                     break
                 except ValueError:
+                    print("Invalid name. Please try again.")
                     pass
         
         if args.slug is None:
@@ -68,6 +69,7 @@ class Args:
                     challenge.set_slug(input(f"Slug of the challenge ({Utils.slugify(challenge.name)}): ") or Utils.slugify(challenge.name) or "challenge")
                     break
                 except ValueError:
+                    print("Invalid slug. Please try again.")
                     pass
         
         if args.author is None:
@@ -76,6 +78,7 @@ class Args:
                     challenge.set_author(input("Author of the challenge: "))
                     break
                 except ValueError:
+                    print("Invalid author. Please try again.")
                     pass
                 
         if args.category is None:
@@ -84,6 +87,7 @@ class Args:
                     challenge.set_category(input(f"Category of the challenge ({', '.join(CATEGORIES)}): ").lower())
                     break
                 except ValueError:
+                    print("Invalid category. Please try again.")
                     pass
                 
         if args.difficulty is None:
@@ -92,6 +96,7 @@ class Args:
                     challenge.set_difficulty(input(f"Difficulty of the challenge ({', '.join(DIFFICULTIES)}): ").lower())
                     break
                 except ValueError:
+                    print("Invalid difficulty. Please try again.")
                     pass
         
         prompted_type = None
@@ -102,6 +107,7 @@ class Args:
                     challenge.set_type(prompted_type)
                     break
                 except ValueError:
+                    print("Invalid type. Please try again.")
                     pass
                 
         if args.flag is None:
@@ -110,6 +116,7 @@ class Args:
                     challenge.set_flag(input(f"Flag for the challenge ({FLAG_FORMAT}): "))
                     break
                 except ValueError:
+                    print("Invalid flag. Please try again.")
                     pass
                 
         if args.points is None:
@@ -118,6 +125,7 @@ class Args:
                     challenge.set_points(int(input("Points for the challenge (1000): ") or 1000))
                     break
                 except ValueError:
+                    print("Invalid points. Please try again.")
                     pass
                 
         if args.min_points is None:
@@ -126,6 +134,7 @@ class Args:
                     challenge.set_min_points(int(input("Minimum points for the challenge (100): ") or 100 ))
                     break
                 except ValueError:
+                    print("Invalid minimum points. Please try again.")
                     pass
         
         if (args.type == "instanced" or prompted_type == "instanced") and args.instanced_type == "none":
@@ -134,6 +143,7 @@ class Args:
                     challenge.set_instanced_type(input(f"Type of instanced challenge ({', '.join(INSTANCED_TYPES)}): ").lower())
                     break
                 except ValueError:
+                    print("Invalid instanced type. Please try again.")
                     pass
         else:
             challenge.set_instanced_type("none")
@@ -144,6 +154,7 @@ class Args:
                     challenge.set_description_location(input("Location of the description file (description.md): ") or "description.md")
                     break
                 except ValueError:
+                    print("Invalid description location. Please try again.")
                     pass
         else:
             challenge.set_description_location(args.description_location)
@@ -160,6 +171,7 @@ class Args:
                         challenge.add_dockerfile_location([ DockerfileLocation(dockerfile_location, dockerfile_context, dockerfile_identifier) ])
                         break
                     except ValueError:
+                        print("Invalid Dockerfile location. Please try again.")
                         pass
 
         if args.handout_location == "handout":
@@ -197,7 +209,6 @@ class ChallengeCreator:
             self.args = arguments
         else:
             self.args.parse()
-            self.args = self.args
         
         arguments = self.args
         args = self.args.args
