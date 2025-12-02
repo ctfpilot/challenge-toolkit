@@ -206,7 +206,7 @@ This file should contain the steps to solve the challenge.""")
         with open(path, "w") as f:
             f.write(f"# {self.challenge.name}\n\n")
             f.write("*Add information about challenge here*  \n")
-            f.write("*It is meant to contian internal documentation of the challenge, such as how it is solved*\n")
+            f.write("*It is meant to contain internal documentation of the challenge, such as how it is solved*\n")
             
         print(f"File created: {path}")
         

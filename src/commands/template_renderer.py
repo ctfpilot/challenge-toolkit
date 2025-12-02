@@ -30,7 +30,7 @@ class Args:
         self.parser.add_argument("challenge", help="Challenge to run (directory for challenge - 'web/example')")
         self.parser.add_argument("--expires", help="Time until challenge expires", type=int, default=3600)
         self.parser.add_argument("--available", help="Time until challenge is available", type=int, default=0)
-        self.parser.add_argument("--repo", help="GitHub repository for CTFd pages in the format 'owner/repo'", default=os.getenv("GITHUB_REPOSITORY	", ""))
+        self.parser.add_argument("--repo", help="GitHub repository for CTFd pages in the format 'owner/repo'", default=os.getenv("GITHUB_REPOSITORY", ""))
     
     def parse(self):
         if self.subcommand:
@@ -373,7 +373,6 @@ class TemplateRenderer:
             self.args = arguments
         else:
             self.args.parse()
-            self.args = self.args
         
         args = self.args
         

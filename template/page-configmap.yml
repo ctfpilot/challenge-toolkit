@@ -14,7 +14,7 @@ data:
   name: "{{ PAGE_NAME }}"
   path: "{{ PAGE_PATH }}"
   repository: "{{ PAGE_REPO }}"
-  generated_at: "{ { CURRENT_DATE } }"
+  generated_at: "{{ CURRENT_DATE }}"
   page: |
     %%PAGE%%
   content: |

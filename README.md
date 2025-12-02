@@ -33,9 +33,9 @@ python challenge-toolkit/src/ctf.py <command> [arguments] [options]
 ```
 
 > [!IMPORTANT]
-> Deployment templates are essentioal for a number of commands to work properly.
+> Deployment templates are essential for a number of commands to work properly.
 
-In order to use `create`, `template`, and `page` you need to copy the deployment templates into the `template/` directory of your challenge repository (In acordance with the **[Template structure](#template-structure)** section).
+In order to use `create`, `template`, and `page` you need to copy the deployment templates into the `template/` directory of your challenge repository (In accordance with the **[Template structure](#template-structure)** section).
 
 This can be done by running:
 

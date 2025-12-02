@@ -1,4 +1,3 @@
-import os
 import sys
 import argparse
 import subprocess
@@ -89,7 +88,6 @@ class DockerBuild:
             self.args = arguments
         else:
             self.args.parse()
-            self.args = self.args
         
         args = self.args.args
         

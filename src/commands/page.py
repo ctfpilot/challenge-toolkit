@@ -23,7 +23,7 @@ class Args:
             self.parser = argparse.ArgumentParser(description="Render template for CTFd pages")
 
         self.parser.add_argument("page", help="Page to render (directory for page - 'web/example')")
-        self.parser.add_argument("--repo", help="GitHub repository for CTFd pages in the format 'owner/repo'", default=os.getenv("GITHUB_REPOSITORY	", ""))
+        self.parser.add_argument("--repo", help="GitHub repository for CTFd pages in the format 'owner/repo'", default=os.getenv("GITHUB_REPOSITORY", ""))
     
     def parse(self):
         if self.subcommand:
@@ -176,7 +176,6 @@ class PageCommand:
             self.args = arguments
         else:
             self.args.parse()
-            self.args = self.args
         
         args = self.args
         

@@ -1,8 +1,5 @@
-import os
 import sys
 import argparse
-
-from datetime import datetime
 
 from library.utils import Utils
 
@@ -18,7 +15,7 @@ class Args:
         else:
             self.parser = argparse.ArgumentParser(description="Slugify a string for use in challenge slug")
 
-        self.parser.add_argument("name", help="Name to slugify", required=True)
+        self.parser.add_argument("name", help="Name to slugify")
     
     def parse(self):
         if self.subcommand:
@@ -57,7 +54,6 @@ class SlugifyCommand:
             self.args = arguments
         else:
             self.args.parse()
-            self.args = self.args
         
         args = self.args
 

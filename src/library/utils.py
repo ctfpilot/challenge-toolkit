@@ -56,14 +56,14 @@ class Utils:
         
     @staticmethod
     def slugify(text):
-        if (text == None):
+        if text is None:
             return None
         
         return slugify(text.strip()).strip('-').strip('_').strip('.')
     
     @staticmethod
     def validate_length(text, min_length, max_length, identifier):
-        if text == None:
+        if text is None:
             print(f"{identifier.capitalize()} must be provided.")
             return False
         

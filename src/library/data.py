@@ -38,7 +38,7 @@ class DockerfileLocation:
     def set_identifier(self, identifier: Optional[str]):
         identifier = Utils.slugify(identifier) or None
         
-        if (identifier == None):
+        if identifier is None:
             self.identifier = None
             return
         
@@ -208,7 +208,7 @@ class Challenge:
         self.category = category
         
     def set_difficulty(self, difficulty: str):
-        if difficulty == None:
+        if difficulty is None:
             print("Difficulty must be provided.")
             raise ValueError("Difficulty must be provided.")
         
@@ -220,7 +220,7 @@ class Challenge:
         self.difficulty = difficulty
         
     def set_type(self, type: str):
-        if type == None:
+        if type is None:
             print("Type must be provided.")
             raise ValueError("Type must be provided.")
         
@@ -369,7 +369,7 @@ class Challenge:
             print(f"Prerequisite {prerequisite} already exists.")
             raise ValueError("Prerequisite already exists.")
         
-        if prerequisite == None:
+        if prerequisite is None:
             print("Prerequisite must be provided.")
             raise ValueError("Prerequisite must be provided.")
         

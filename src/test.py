@@ -1,6 +1,5 @@
 import unittest
 import io
-import os
 from contextlib import redirect_stdout
 
 from tests.library.dataTest import TestChallenge, TestChallengeFileLoad, TestChallengeFileWrite, TestPage
