@@ -50,23 +50,31 @@ class Docker:
         print(f"Building Docker image \"{image_full}\"...")
         
         try:
-            command = f"docker build -t {image_full}:latest -t {image_full}:{challenge.get_version()} -f {Utils.get_challenge_dir(challenge.category, challenge.slug)}/{dockerfile_location.location} {Utils.get_challenge_dir(challenge.category, challenge.slug)}/{dockerfile_location.context}"
-            build_proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            build_command = [
+                "docker", "build",
+                "-t", f"{image_full}:latest",
+                "-t", f"{image_full}:{challenge.get_version()}",
+                "-f", f"{Utils.get_challenge_dir(challenge.category, challenge.slug)}/{dockerfile_location.location}",
+                f"{Utils.get_challenge_dir(challenge.category, challenge.slug)}/{dockerfile_location.context}"
+            ]
+            build_proc = subprocess.Popen(build_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             if build_proc.stdout is not None:
                 for line in build_proc.stdout:
                     print(line, end="")
             build_proc.wait()
             if build_proc.returncode != 0:
-                raise subprocess.CalledProcessError(build_proc.returncode, command)
+                raise subprocess.CalledProcessError(build_proc.returncode, build_command)
 
-            command = f"docker push {image_full} --all-tags"
-            push_proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            push_command = [
+                "docker", "push", image_full, "--all-tags"
+            ]
+            push_proc = subprocess.Popen(push_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             if push_proc.stdout is not None:
                 for line in push_proc.stdout:
                     print(line, end="")
             push_proc.wait()
             if push_proc.returncode != 0:
-                raise subprocess.CalledProcessError(push_proc.returncode, command)
+                raise subprocess.CalledProcessError(push_proc.returncode, push_command)
         except subprocess.CalledProcessError as e:
             print(f"Error: Command failed with exit code {e.returncode}: {e.cmd}", file=sys.stderr)
             raise e
