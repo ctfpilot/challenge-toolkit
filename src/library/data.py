@@ -115,58 +115,58 @@ class Challenge:
         handout_dir: Optional[str] = None
     ):
         # Insert default values from DEFAULT
-        if enabled != None:
+        if enabled is not None:
             self.set_enabled(enabled)
         else: self.set_enabled(DEFAULT['enabled'])
-        if name != None:
+        if name is not None:
             self.set_name(name)
         else: self.set_name(DEFAULT['name'])
-        if slug != None:
+        if slug is not None:
             self.set_slug(slug)
         else: self.set_slug(DEFAULT['slug'])
-        if author != None:
+        if author is not None:
             self.set_author(author)
         else: self.set_author(DEFAULT['author'])
-        if category != None:
+        if category is not None:
             self.set_category(category)
         else: self.set_category(DEFAULT['category'])
-        if difficulty != None:
+        if difficulty is not None:
             self.set_difficulty(difficulty)
         else: self.set_difficulty(DEFAULT['difficulty'])
-        if type != None:
+        if type is not None:
             self.set_type(type)
         else: self.set_type(DEFAULT['type'])
-        if instanced_type != None:
+        if instanced_type is not None:
             self.set_instanced_type(instanced_type)
         else: self.set_instanced_type(DEFAULT['instanced_type'])
-        if tags != None:
+        if tags is not None:
             self.set_tags(tags)
         else: self.set_tags(DEFAULT['tags'])
-        if instanced_name != None:
+        if instanced_name is not None:
             self.instanced_name = instanced_name
         else: self.instanced_name = DEFAULT['instanced_name']
-        if instanced_subdomains != None:
+        if instanced_subdomains is not None:
             self.set_instanced_subdomains(instanced_subdomains)
         else: self.instanced_subdomains = DEFAULT['instanced_subdomains']
-        if connection != None:
+        if connection is not None:
             self.set_connection(connection)
         else: self.connection = DEFAULT['connection']
-        if flag != None:
+        if flag is not None:
             self.set_flag(flag)
         else: self.set_flag(DEFAULT['flag'])
-        if points != None:
+        if points is not None:
             self.set_points(points)
         else: self.set_points(DEFAULT['points'])
-        if decay != None:
+        if decay is not None:
             self.set_decay(decay)
         else: self.set_decay(DEFAULT['decay'])
-        if min_points != None:
+        if min_points is not None:
             self.set_min_points(min_points)
         else: self.set_min_points(DEFAULT['min_points'])
-        if description_location != None:
+        if description_location is not None:
             self.set_description_location(description_location)
         else: self.set_description_location(DEFAULT['description_location'])
-        if handout_dir != None:
+        if handout_dir is not None:
             self.set_handout_dir(handout_dir)
         else: self.set_handout_dir(DEFAULT['handout_dir'])
 
