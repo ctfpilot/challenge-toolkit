@@ -145,6 +145,7 @@ class K8s:
         output_content = K8s.replace_templated("CHALLENGE_VERSION", str(args.challenge.get_version()), output_content)
         output_content = K8s.replace_templated("CHALLENGE_EXPIRES", str(args.expires), output_content)
         output_content = K8s.replace_templated("CHALLENGE_AVAILABLE_AT", str(args.available), output_content)
+        output_content = K8s.replace_templated("CHALLENGE_REPO", args.repo, output_content)
         
         # Create docker image name
         docker_image = f"{args.challenge.category}-{args.challenge.slug}".lower().replace(" ", "")
