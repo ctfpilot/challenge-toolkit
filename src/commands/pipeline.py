@@ -105,7 +105,7 @@ class DockerBuild:
         
         challenge = args.challenge
     
-        if not "/" in challenge:
+        if "/" not in challenge:
             print(f"Challenge {challenge} must be in the format 'category/name'")
             exit(1)
         
