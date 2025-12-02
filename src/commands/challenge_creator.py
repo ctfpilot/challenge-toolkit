@@ -61,7 +61,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid name. Please try again.")
-                    pass
         
         if args.slug is None:
             while True:
@@ -70,7 +69,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid slug. Please try again.")
-                    pass
         
         if args.author is None:
             while True:
@@ -79,7 +77,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid author. Please try again.")
-                    pass
                 
         if args.category is None:
             while True:
@@ -88,7 +85,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid category. Please try again.")
-                    pass
                 
         if args.difficulty is None:
             while True:
@@ -97,7 +93,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid difficulty. Please try again.")
-                    pass
         
         prompted_type = None
         if args.type is None:
@@ -108,7 +103,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid type. Please try again.")
-                    pass
                 
         if args.flag is None:
             while True:
@@ -117,7 +111,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid flag. Please try again.")
-                    pass
                 
         if args.points is None:
             while True:
@@ -126,7 +119,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid points. Please try again.")
-                    pass
                 
         if args.min_points is None:
             while True:
@@ -135,7 +127,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid minimum points. Please try again.")
-                    pass
         
         if (args.type == "instanced" or prompted_type == "instanced") and args.instanced_type == "none":
             while True:
@@ -144,7 +135,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid instanced type. Please try again.")
-                    pass
         else:
             challenge.set_instanced_type("none")
                 
@@ -155,7 +145,6 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid description location. Please try again.")
-                    pass
         else:
             challenge.set_description_location(args.description_location)
                 
@@ -172,7 +161,6 @@ class Args:
                         break
                     except ValueError:
                         print("Invalid Dockerfile location. Please try again.")
-                        pass
 
         if args.handout_location == "handout":
             contains_handout = input("What is the location of the handout for handing out with the challenge? (handout): ") or "handout"

@@ -9,7 +9,7 @@ metadata:
     challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
     instanced.challenges.ctfpilot.com/deployment: "{{ deployment_id }}"
     instanced.challenges.ctfpilot.com/owner: "{{ owner_id }}"
-    ctfpilot.com/component: "challenge"
+    ctfpilot.com/component: "instanced-challenge"
   annotations:
     janitor/expires: "{{ expires }}"
 spec:
@@ -27,7 +27,7 @@ spec:
         challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
         instanced.challenges.ctfpilot.com/deployment: "{{ deployment_id }}"
         instanced.challenges.ctfpilot.com/owner: "{{ owner_id }}"
-        ctfpilot.com/component: "challenge"
+        ctfpilot.com/component: "instanced-challenge"
     spec:
       enableServiceLinks: false
       automountServiceAccountToken: false
@@ -96,6 +96,7 @@ metadata:
   labels:
     challenges.ctfpilot.com/type: "{{ CHALLENGE_TYPE }}"
     challenges.ctfpilot.com/name: "{{ CHALLENGE_NAME }}"
+    challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
     instanced.challenges.ctfpilot.com/deployment: "{{ deployment_id }}"
     instanced.challenges.ctfpilot.com/owner: "{{ owner_id }}"
     ctfpilot.com/component: "instanced-challenge"
