@@ -24,7 +24,7 @@ spec:
         role: "{{ CHALLENGE_TYPE }}"
         challenges.ctfpilot.com/type: "{{ CHALLENGE_TYPE }}"
         challenges.ctfpilot.com/name: "{{ CHALLENGE_NAME }}"
-        ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
+        challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
         instanced.challenges.ctfpilot.com/deployment: "{{ deployment_id }}"
         instanced.challenges.ctfpilot.com/owner: "{{ owner_id }}"
         ctfpilot.com/component: "instanced-challenge"
