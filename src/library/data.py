@@ -365,13 +365,13 @@ class Challenge:
         if Utils.validate_length(prerequisite, 1, 50, "prerequisite") == False:
             raise ValueError("Prerequisite must be between 1 and 50 characters.")
         
-        if prerequisite in self.prerequisites:
-            print(f"Prerequisite {prerequisite} already exists.")
-            raise ValueError("Prerequisite already exists.")
-        
         if prerequisite is None:
             print("Prerequisite must be provided.")
             raise ValueError("Prerequisite must be provided.")
+        
+        if prerequisite in self.prerequisites:
+            print(f"Prerequisite {prerequisite} already exists.")
+            raise ValueError("Prerequisite already exists.")
         
         self.prerequisites.append(prerequisite)
         
