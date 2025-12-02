@@ -6,5 +6,5 @@ from tests.library.dataTest import TestChallenge, TestChallengeFileLoad, TestCha
 
 if __name__ == '__main__':
     
-    with io.StringIO() as buf, redirect_stdout(buf):        
+    with io.StringIO() as buf, redirect_stdout(buf):
         unittest.main()
