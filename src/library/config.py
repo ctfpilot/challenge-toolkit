@@ -9,7 +9,7 @@ PAGE_SCHEMA = "https://raw.githubusercontent.com/ctfpilot/page-schema/refs/heads
 
 # Allowed values for schema fields
 CHALL_TYPES = [ "static", "shared", "instanced" ]
-DIFFICULTIES = [ "beginner", "easy", "easy-medium", "medium", "medium-hard","hard", "very-hard", "insane"]
+DIFFICULTIES = [ "beginner", "easy", "easy-medium", "medium", "medium-hard", "hard", "very-hard", "insane"]
 CATEGORIES = [ "web", "forensics", "rev", "crypto", "pwn", "boot2root", "osint", "misc", "blockchain", "mobile", "test" ]
 INSTANCED_TYPES = [ "none", "web", "tcp" ] # "none" is the default. Defines how users interact with the challenge.
 
