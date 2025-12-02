@@ -62,7 +62,7 @@ class Args:
                 except ValueError:
                     pass
         
-        if args.slug == None:
+        if args.slug is None:
             while True:
                 try:
                     challenge.set_slug(input(f"Slug of the challenge ({Utils.slugify(challenge.name)}): ") or Utils.slugify(challenge.name) or "challenge")
@@ -70,7 +70,7 @@ class Args:
                 except ValueError:
                     pass
         
-        if args.author == None:
+        if args.author is None:
             while True:
                 try:
                     challenge.set_author(input("Author of the challenge: "))
@@ -78,7 +78,7 @@ class Args:
                 except ValueError:
                     pass
                 
-        if args.category == None:
+        if args.category is None:
             while True:
                 try:
                     challenge.set_category(input(f"Category of the challenge ({', '.join(CATEGORIES)}): ").lower())
@@ -86,7 +86,7 @@ class Args:
                 except ValueError:
                     pass
                 
-        if args.difficulty == None:
+        if args.difficulty is None:
             while True:
                 try:
                     challenge.set_difficulty(input(f"Difficulty of the challenge ({', '.join(DIFFICULTIES)}): ").lower())
@@ -95,7 +95,7 @@ class Args:
                     pass
         
         prompted_type = None
-        if args.type == None:
+        if args.type is None:
             while True:
                 try:
                     prompted_type = input(f"Type of the challenge ({', '.join(CHALL_TYPES)}): ").lower()
@@ -104,7 +104,7 @@ class Args:
                 except ValueError:
                     pass
                 
-        if args.flag == None:
+        if args.flag is None:
             while True:
                 try:
                     challenge.set_flag(input(f"Flag for the challenge ({FLAG_FORMAT}): "))
@@ -112,7 +112,7 @@ class Args:
                 except ValueError:
                     pass
                 
-        if args.points == None:
+        if args.points is None:
             while True:
                 try:
                     challenge.set_points(int(input("Points for the challenge (1000): ") or 1000))
@@ -120,7 +120,7 @@ class Args:
                 except ValueError:
                     pass
                 
-        if args.min_points == None:
+        if args.min_points is None:
             while True:
                 try:
                     challenge.set_min_points(int(input("Minimum points for the challenge (100): ") or 100 ))
@@ -148,7 +148,7 @@ class Args:
         else:
             challenge.set_description_location(args.description_location)
                 
-        if args.dockerfile_location == None or args.dockerfile_location == "src/Dockerfile":
+        if args.dockerfile_location is None or args.dockerfile_location == "src/Dockerfile":
             contains_docker = input("Does the challenge contain a Dockerfile? (y/N): ").lower() == "y"
             if contains_docker:
                 while True:
@@ -209,8 +209,7 @@ class ChallengeCreator:
         if args.slug is None:
             args.slug = Utils.slugify(args.name) if args.name else "challenge"
         
-        challenge = None
-        challenge = challenge = Challenge(
+        challenge = Challenge(
                 name = args.name, 
                 slug = args.slug, 
                 author = args.author, 
