@@ -245,11 +245,14 @@ This file should contain the steps to solve the challenge.""")
         path = os.path.join(self.dir_src, "Dockerfile")
         with open(path, "w") as f:
             f.write(f"# Dockerfile for {self.challenge.category} - {self.challenge.name}\n")
-            f.write("FROM ubuntu:latest\n")
+            f.write("FROM ubuntu:22.04\n")
             f.write("\n")
-            f.write("RUN apt-get update && apt-get install -y python3\n")
+            f.write("RUN apt-get update && apt-get upgrade -y && apt-get install -y python3")
             f.write("\n")
-            f.write("CMD [\"/bin/bash\"]\n")
+            f.write("RUN useradd -m challengeuser\n")
+            f.write("\n")
+            f.write("USER challengeuser\n")
+            f.write("\n")
             
         print(f"File created: {path}")
         

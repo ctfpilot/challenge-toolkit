@@ -175,6 +175,9 @@ class Challenge:
         
     
     def set_enabled(self, enabled: bool):
+        if not isinstance(enabled, bool):
+            raise ValueError("Enabled must be a boolean")
+        
         self.enabled = enabled
     
     def set_name(self, name: str):
