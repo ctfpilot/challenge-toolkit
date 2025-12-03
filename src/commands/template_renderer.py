@@ -92,11 +92,7 @@ class Clean:
         
         print(f"Cleaned instanced template for {self.challenge.slug}")
 
-class K8s:
-    def __init__(self, challenge: Challenge):
-        self.challenge = challenge
-        self.generator = Generator(challenge)
-
+class Renderer:
     @staticmethod
     def replace_templated(key: str, value: str, content: str):
         content = content.replace("{{ " + key + " }}", value)
@@ -104,6 +100,12 @@ class K8s:
         content = content.replace("{ { " + key + " } }", value)
         content = content.replace("{ {" + key + "} }", value)
         return content
+    
+
+class K8s:
+    def __init__(self, challenge: Challenge):
+        self.challenge = challenge
+        self.generator = Generator(challenge)
 
     def get_template_content(self):
         template_source_path = os.path.join(Utils.get_template_dir(), "instanced-k8s-challenge.yml")
@@ -139,17 +141,17 @@ class K8s:
 
         output_content = templateing_base_template.replace("    %%TEMPLATE%%", challenge_template_indented)
 
-        output_content = K8s.replace_templated("CHALLENGE_NAME", args.challenge.slug, output_content)
-        output_content = K8s.replace_templated("CHALLENGE_CATEGORY", args.challenge.category, output_content)
-        output_content = K8s.replace_templated("CHALLENGE_TYPE", args.challenge.instanced_type, output_content)
-        output_content = K8s.replace_templated("CHALLENGE_VERSION", str(args.challenge.get_version()), output_content)
-        output_content = K8s.replace_templated("CHALLENGE_EXPIRES", str(args.expires), output_content)
-        output_content = K8s.replace_templated("CHALLENGE_AVAILABLE_AT", str(args.available), output_content)
-        output_content = K8s.replace_templated("CHALLENGE_REPO", args.repo, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_NAME", args.challenge.slug, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_CATEGORY", args.challenge.category, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_TYPE", args.challenge.instanced_type, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_VERSION", str(args.challenge.get_version()), output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_EXPIRES", str(args.expires), output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_AVAILABLE_AT", str(args.available), output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_REPO", args.repo, output_content)
         
         # Create docker image name
         docker_image = f"{args.challenge.category}-{args.challenge.slug}".lower().replace(" ", "")
-        output_content = K8s.replace_templated("DOCKER_IMAGE", docker_image, output_content)
+        output_content = Renderer.replace_templated("DOCKER_IMAGE", docker_image, output_content)
 
         deployment_dir = Utils.get_challenge_render_dir(args.challenge.category, args.challenge.slug)
         if not os.path.exists(deployment_dir):
@@ -201,13 +203,6 @@ class ConfigMap:
     
     def __init__(self, challenge: Challenge):
         self.challenge = challenge
-        
-    def replace_templated(self, key: str, value: str, content: str):
-        content = content.replace("{{ " + key + " }}", value)
-        content = content.replace("{{" + key + "}}", value)
-        content = content.replace("{ { " + key + " } }", value)
-        content = content.replace("{ {" + key + "} }", value)
-        return content
     
     def get_template_content(self):
         template_source = self.challenge.str_json(CHALLENGE_SCHEMA)
@@ -236,19 +231,19 @@ class ConfigMap:
         output_content = output_content.replace("    %%DESCRIPTION%%", self.get_description())
     
         # Template values in configmap
-        output_content = self.replace_templated("CHALLENGE_NAME", args.challenge.slug, output_content)
-        output_content = self.replace_templated("CHALLENGE_PATH", Utils.get_challenge_dir_str(self.challenge.category, self.challenge.slug), output_content)
-        output_content = self.replace_templated("CHALLENGE_REPO", args.repo, output_content)
-        output_content = self.replace_templated("CHALLENGE_CATEGORY", args.challenge.category, output_content)
-        output_content = self.replace_templated("CHALLENGE_TYPE", args.challenge.instanced_type, output_content)
-        output_content = self.replace_templated("CHALLENGE_VERSION", str(args.challenge.get_version()), output_content)
-        output_content = self.replace_templated("CHALLENGE_ENABLED", str(args.challenge.enabled).lower(), output_content)
-        output_content = self.replace_templated("HOST", "{{ .Values.kubectf.host }}", output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_NAME", args.challenge.slug, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_PATH", Utils.get_challenge_dir_str(self.challenge.category, self.challenge.slug), output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_REPO", args.repo, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_CATEGORY", args.challenge.category, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_TYPE", args.challenge.instanced_type, output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_VERSION", str(args.challenge.get_version()), output_content)
+        output_content = Renderer.replace_templated("CHALLENGE_ENABLED", str(args.challenge.enabled).lower(), output_content)
+        output_content = Renderer.replace_templated("HOST", "{{ .Values.kubectf.host }}", output_content)
         
         # Insert the current date, for knowing when the challenge was last updated
         now = datetime.now()
         current_date = now.strftime("%Y-%m-%d %H:%M:%S")
-        output_content = self.replace_templated("CURRENT_DATE", current_date, output_content)
+        output_content = Renderer.replace_templated("CURRENT_DATE", current_date, output_content)
 
         configmap_dir =Utils.get_configmap_dir(args.challenge.category, args.challenge.slug)
         if not os.path.exists(configmap_dir):
