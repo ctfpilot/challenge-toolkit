@@ -359,15 +359,15 @@ class Challenge:
     def add_dockerfile_location(self, locations: List[DockerfileLocation]):
         self.dockerfile_locations.extend(locations)
         
-    def add_prerequisite(self, prerequisite: Optional[str]):        
+    def add_prerequisite(self, prerequisite: Optional[str]):
         prerequisite = Utils.slugify(prerequisite)
-        
-        if Utils.validate_length(prerequisite, 1, 50, "prerequisite") == False:
-            raise ValueError("Prerequisite must be between 1 and 50 characters.")
         
         if prerequisite is None:
             print("Prerequisite must be provided.")
             raise ValueError("Prerequisite must be provided.")
+        
+        if Utils.validate_length(prerequisite, 1, 50, "prerequisite") == False:
+            raise ValueError("Prerequisite must be between 1 and 50 characters.")
         
         if prerequisite in self.prerequisites:
             print(f"Prerequisite {prerequisite} already exists.")
