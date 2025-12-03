@@ -132,7 +132,7 @@ class K8s:
         
         base_template_content, challenge_template, challenge_template_indented = self.get_template_content()
 
-        # If instanced, it needs to utalize the base template for instanced challenges
+        # If instanced, it needs to utilize the base template for instanced challenges
         templateing_base_template = challenge_template
         if self.challenge.type == "instanced":
             templateing_base_template = base_template_content
