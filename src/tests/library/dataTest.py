@@ -201,7 +201,7 @@ class TestChallenge(unittest.TestCase):
             )
 
     def test_missing_type(self):
-         with self.assertRaises(ValueError):
+        with self.assertRaises(ValueError):
             Challenge(
                 enabled=True,
                 name="Test Challenge",
