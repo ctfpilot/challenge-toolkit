@@ -325,6 +325,11 @@ class HandoutRenderer:
             
             # Copy files from the handout directory to the temporary directory
             for item in os.listdir(handout_path):
+                # Verify the item is within the handout directory
+                if not os.path.commonpath([os.path.abspath(handout_path), os.path.abspath(os.path.join(handout_path, item))]) == os.path.abspath(handout_path):
+                    print(f"Skipping item {item} as it is outside the handout directory.")
+                    continue
+                
                 source_item = os.path.join(handout_path, item)
                 dest_item = os.path.join(temp_handout_path, item)
                 
