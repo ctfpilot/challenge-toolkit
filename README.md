@@ -110,7 +110,7 @@ PAGE_SCHEMA = "https://raw.githubusercontent.com/ctfpilot/page-schema/refs/heads
 
 # Allowed values for schema fields
 CHALL_TYPES = [ "static", "shared", "instanced" ]
-DIFFICULTIES = [ "beginner", "easy", "easy-medium", "medium", "medium-hard","hard", "very-hard", "insane"]
+DIFFICULTIES = [ "beginner", "easy", "easy-medium", "medium", "medium-hard", "hard", "very-hard", "insane"]
 CATEGORIES = [ "web", "forensics", "rev", "crypto", "pwn", "boot2root", "osint", "misc", "blockchain", "mobile", "test" ]
 INSTANCED_TYPES = [ "none", "web", "tcp" ] # "none" is the default. Defines how users interact with the challenge.
 
@@ -293,7 +293,7 @@ python challenge-toolkit/src/ctf.py template k8s web/sql-injection-101
 # Generate ConfigMap with custom expiry time (2 hours) and repo
 python challenge-toolkit/src/ctf.py template configmap web/sql-injection-101 \
   --expires 7200 \
-  --repo ctfpilot/ctfpilot/ctf-challenges
+  --repo ctfpilot/ctf-challenges
 
 # Create handout archive
 python challenge-toolkit/src/ctf.py template handout web/sql-injection-101
@@ -388,7 +388,7 @@ python challenge-toolkit/src/ctf.py page <page> [options]
 
 ```sh
 # Render a custom page
-python challenge-toolkit/src/ctf.py page rules --repo ctfpilot/ctfpilot/ctf-challenges
+python challenge-toolkit/src/ctf.py page rules --repo ctfpilot/ctf-challenges
 
 # Render about page
 python challenge-toolkit/src/ctf.py page about
