@@ -4,6 +4,16 @@ A comprehensive CLI toolkit for CTF challenge development, deployment, and manag
 
 The Challenge Toolkit streamlines the entire CTF challenge lifecycle, from bootstrapping new challenges with proper directory structures to building Docker images and generating Kubernetes deployment manifests. Built to work seamlessly with [CTF Pilot's infrastructure](https://github.com/ctfpilot), it enforces standardized schemas and automates repetitive tasks, letting you focus on creating great challenges instead of managing boilerplate.
 
+## Supported CTF Pilot versions
+
+| CTF Pilot Component                                                          | Supported Version |
+| ---------------------------------------------------------------------------- | ----------------- |
+| [CTF Pilot's CTF Platform (CTFp)](https://github.com/ctfpilot/ctfp)          | v1.0              |
+| [CTF Pilot's Challenge Schema](https://github.com/ctfpilot/challenge-schema) | v1.0              |
+| [CTF Pilot's Page Schema](https://github.com/ctfpilot/page-schema)           | v1.0              |
+| [CTF Pilot's CTFd Manager](https://github.com/ctfpilot/ctfd-manager)         | v1.0              |
+| [kube-ctf](https://github.com/ctfpilot/kube-ctf)                             | v1.0              |
+
 ## How to run
 
 > [!NOTE]
