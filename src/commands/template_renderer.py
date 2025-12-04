@@ -3,6 +3,7 @@ import sys
 import argparse
 import tempfile
 import shutil
+from pathlib import Path
 
 from datetime import datetime
 
@@ -324,16 +325,24 @@ class HandoutRenderer:
             os.makedirs(temp_handout_path, exist_ok=True)
             
             # Copy files from the handout directory to the temporary directory
+            handout_base = Path(handout_path).resolve()
             for item in os.listdir(handout_path):
-                # Verify the item is within the handout directory
-                if not os.path.commonpath([os.path.abspath(handout_path), os.path.abspath(os.path.join(handout_path, item))]) == os.path.abspath(handout_path):
+                # Verify the item is within the handout directory using resolved paths
+                source_item = handout_base / item
+                try:
+                    source_item_resolved = source_item.resolve()
+                    # Ensure the resolved path is within the handout directory
+                    source_item_resolved.relative_to(handout_base)
+                except (ValueError, RuntimeError):
                     print(f"Skipping item {item} as it is outside the handout directory.")
                     continue
                 
-                source_item = os.path.join(handout_path, item)
+                source_item = str(source_item_resolved)
                 dest_item = os.path.join(temp_handout_path, item)
                 
-                if item in ['.gitkeep', '.gitignore']:
+                # Get filename
+                item_filename = os.path.basename(item)
+                if item_filename in ['.gitkeep', '.gitignore']:
                     # Skip .gitkeep and .gitignore files
                     continue
                 
