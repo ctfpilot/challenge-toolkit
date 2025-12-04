@@ -61,6 +61,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid name. Please try again.")
+        else:
+            challenge.set_name(args.name)
         
         if args.slug is None:
             while True:
@@ -69,6 +71,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid slug. Please try again.")
+        else:
+            challenge.set_slug(args.slug)
         
         if args.author is None:
             while True:
@@ -77,6 +81,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid author. Please try again.")
+        else:
+            challenge.set_author(args.author)
                 
         if args.category is None:
             while True:
@@ -85,6 +91,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid category. Please try again.")
+        else:
+            challenge.set_category(args.category)
                 
         if args.difficulty is None:
             while True:
@@ -93,6 +101,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid difficulty. Please try again.")
+        else:
+            challenge.set_difficulty(args.difficulty)
         
         prompted_type = None
         if args.type is None:
@@ -103,6 +113,9 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid type. Please try again.")
+        else:
+            challenge.set_type(args.type)
+            prompted_type = args.type
                 
         if args.flag is None:
             while True:
@@ -111,6 +124,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid flag. Please try again.")
+        else:
+            challenge.set_flag(args.flag)
                 
         if args.points is None:
             while True:
@@ -119,6 +134,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid points. Please try again.")
+        else:
+            challenge.set_points(args.points)
                 
         if args.min_points is None:
             while True:
@@ -127,6 +144,8 @@ class Args:
                     break
                 except ValueError:
                     print("Invalid minimum points. Please try again.")
+        else:
+            challenge.set_min_points(args.min_points)
         
         if (args.type == "instanced" or prompted_type == "instanced") and args.instanced_type == "none":
             while True:
@@ -205,10 +224,26 @@ class ChallengeCreator:
             print("Error parsing arguments. Please run with --help to see available options.")
             sys.exit(1)
         
-        if args.slug is None:
+        if args.name and args.slug is None:
             args.slug = Utils.slugify(args.name) if args.name else "challenge"
         
-        challenge = Challenge(
+        challenge = None
+        if args.no_prompts == False:
+            challenge = Challenge(name="demo", slug="demo", author="demo", category="misc", difficulty="easy", type="static", flag="flag{demo_flag}")
+            arguments.prompt(challenge)
+
+            print("\nInformation filled out.")
+            
+            print("\nInformation for the challenge:")
+            print(challenge)
+            
+            print("\nIs the information correct?")
+            if (input("Y/n: ") or "y").lower() != "y":
+                print("Exiting...")
+                sys.exit(1)
+        
+        else:
+            challenge = Challenge(
                 name = args.name, 
                 slug = args.slug, 
                 author = args.author, 
@@ -222,26 +257,14 @@ class ChallengeCreator:
                 description_location = args.description_location,
                 handout_dir = args.handout_location
             )
-        if args.no_prompts and args.type != "static":
-            try:
-                if args.dockerfile_location:
-                    challenge.add_dockerfile_location([ DockerfileLocation(args.dockerfile_location, args.dockerfile_context, args.dockerfile_identifier) ])
-            except ValueError:
-                sys.exit(1)
         
-        if args.no_prompts == False:
-            arguments.prompt(challenge)
+            if args.type != "static":
+                try:
+                    if args.dockerfile_location:
+                        challenge.add_dockerfile_location([ DockerfileLocation(args.dockerfile_location, args.dockerfile_context, args.dockerfile_identifier) ])
+                except ValueError:
+                    sys.exit(1)
 
-            print("\nInformation filled out.")
-            
-            print("\nInformation for the challenge:")
-            print(challenge)
-            
-            print("\nIs the information correct?")
-            if (input("Y/n: ") or "y").lower() != "y":
-                print("Exiting...")
-                sys.exit(1)
-        
         generator = Generator(challenge)
         generator.generate()
         
