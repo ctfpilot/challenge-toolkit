@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ctfpilot/challenge-schema/refs/heads/main/schema.json",
+  "enabled": true,
+  "name": "Example Challenge",
+  "slug": "example-challenge",
+  "author": "John Smith",
+  "category": "web",
+  "difficulty": "easy",
+  "tags": [
+    "demo",
+    "example"
+  ],
+  "type": "static",
+  "instanced_type": "none",
+  "connection": "nc example.com 1337",
+  "flag": "ctfpilot{flag}",
+  "points": 500,
+  "decay": 100,
+  "min_points": 50,
+  "description_location": "demo/description.md",
+  "prerequisites": [
+    "prerequisite-challenge"
+  ],
+  "dockerfile_locations": [
+    {
+      "location": "src/web/Dockerfile",
+      "context": "src/web/",
+      "identifier": "web"
+    },
+    {
+      "location": "src/bot/Dockerfile",
+      "context": "src/bot/",
+      "identifier": "bot"
+    }
+  ],
+  "handout_dir": "handouts"
+}
