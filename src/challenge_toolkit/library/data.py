@@ -79,17 +79,17 @@ class Challenge:
     difficulty: str
     type: str
     tags: Optional[List[str]] = field(default_factory=list)
-    instanced_type: str = "none"
-    instanced_name: Optional[str] = None
+    instanced_type: str = DEFAULT['instanced_type']
+    instanced_name: Optional[str] = DEFAULT['instanced_name']
     instanced_subdomains: List[str] = field(default_factory=list)
-    connection: Optional[str] = None
+    connection: Optional[str] = DEFAULT['connection']
     flag: Optional[List[ChallengeFlag]] = None
-    enabled: bool = True
-    points: int = 1000
-    decay: int = 75
-    min_points: int = 100
-    description_location: str = "description.md"
-    handout_dir: str = "handout"
+    enabled: bool = DEFAULT['enabled']
+    points: int = DEFAULT['points']
+    decay: int = DEFAULT['decay']
+    min_points: int = DEFAULT['min_points']
+    description_location: str = DEFAULT['description_location']
+    handout_dir: str = DEFAULT['handout_dir']
     dockerfile_locations: List[DockerfileLocation] = field(default_factory=list)
     prerequisites: List[str] = field(default_factory=list)
     
@@ -246,6 +246,10 @@ class Challenge:
         self.tags = tags
         
     def set_points(self, points: int):
+        if points is None:
+            self.points = None
+            return
+
         if points < 1 or points > 10000:
             print("Points must be between 1 and 10000.")
             raise ValueError("Points must be between 1 and 10000.")
@@ -253,6 +257,10 @@ class Challenge:
         self.points = points
         
     def set_decay(self, decay: int):
+        if decay is None:
+            self.decay = None
+            return
+
         if decay < 0 or decay > 10000:
             print("Decay must be between 0 and 10000.")
             raise ValueError("Decay must be between 0 and 10000.")
@@ -260,6 +268,10 @@ class Challenge:
         self.decay = decay
         
     def set_min_points(self, min_points: int):
+        if min_points is None:
+            self.min_points = None
+            return
+
         if min_points < 1 or min_points > 1000:
             print("Minimum points must be between 1 and 1000.")
             raise ValueError("Minimum points must be between 1 and 1000.")
@@ -416,12 +428,15 @@ class Challenge:
             "instanced_subdomains": self.instanced_subdomains,
             "connection": self.connection,
             "flag": flag,
-            "points": self.points,
-            "decay": self.decay,
-            "min_points": self.min_points,
             "description_location": self.description_location,
             "handout_dir": self.handout_dir
         }
+        if self.points:
+            data["points"] = self.points
+        if self.decay:
+            data["decay"] = self.decay
+        if self.min_points:
+            data["min_points"] = self.min_points
         if self.dockerfile_locations:
             data["dockerfile_locations"] = [
                 {
@@ -465,11 +480,11 @@ class Challenge:
             instanced_subdomains=yml.get("instanced_subdomains", []),
             connection=yml.get("connection", None),
             flag=yml.get("flag", None),
-            points=yml.get("points", 1000),
-            decay=yml.get("decay", 75),
-            min_points=yml.get("min_points", 100),
-            description_location=yml.get("description_location", "description.md"),
-            handout_dir=yml.get("handout_dir", "handout")
+            points=yml.get("points", None),
+            decay=yml.get("decay", None),
+            min_points=yml.get("min_points", None),
+            description_location=yml.get("description_location", None),
+            handout_dir=yml.get("handout_dir", None)
         )
 
         dockerfile_locations = yml.get("dockerfile_locations", [])
@@ -498,11 +513,11 @@ class Challenge:
             instanced_subdomains=json_data.get("instanced_subdomains", []),
             connection=json_data.get("connection", None),
             flag=json_data.get("flag", None),
-            points=json_data.get("points", 1000),
-            decay=json_data.get("decay", 75),
-            min_points=json_data.get("min_points", 100),
-            description_location=json_data.get("description_location", "description.md"),
-            handout_dir=json_data.get("handout_dir", "handout")
+            points=json_data.get("points", None),
+            decay=json_data.get("decay", None),
+            min_points=json_data.get("min_points", None),
+            description_location=json_data.get("description_location", None),
+            handout_dir=json_data.get("handout_dir", None)
         )
 
         dockerfile_locations = json_data.get("dockerfile_locations", [])
