@@ -112,7 +112,7 @@ class K8s:
         self.challenge = challenge
         self.generator = Generator(challenge)
 
-    def get_template_content(self):
+    def get_template_content_kubectf(self):
         template_source_path = os.path.join(Utils.get_template_dir(), "instanced-k8s-challenge.yml")
         with open(template_source_path, "r") as f:
             base_template_content = f.read()
@@ -126,6 +126,15 @@ class K8s:
 
         return base_template_content, challenge_template_content, challenge_template_indented
 
+
+    def get_template_content_flightops(self):
+        challenge_template = os.path.join(self.generator.dir_template, "k8s.yml")
+        challenge_template_content = ""
+        with open(challenge_template, "r") as f:
+            challenge_template_content = f.read()
+
+        return challenge_template_content
+
     def render(self, args: Args):
         if not self.generator.instanced_template_source_file_exists():
             print("Instanced template source file does not exist. Critical error.")
@@ -135,7 +144,7 @@ class K8s:
             print("Challenge does not have a k8s template.")
             sys.exit(0)
 
-        _, challenge_template, _ = self.get_template_content()
+        challenge_template = self.get_template_content_flightops()
 
         print(f"Rendering k8s template for challenge {args.challenge.slug}...")
 
