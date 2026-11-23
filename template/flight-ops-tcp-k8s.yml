@@ -1,0 +1,119 @@
+apiVersion: challenges.ctfpilot.com/v1alpha1
+kind: FlightPlan
+metadata:
+  name: "{{ CHALLENGE_NAME }}"
+  labels:
+    flight.ctfpilot.com/mode: "instanced"
+    flight.ctfpilot.com/plan: "{{ CHALLENGE_NAME }}"
+    flight.ctfpilot.com/category: "{{ CHALLENGE_TYPE }}"
+    ctfpilot.com/component: "flightplan"
+spec:
+  mode: instanced
+  category: "{{ CHALLENGE_TYPE }}"
+  defaultTTL: 3600
+  firstDepartureAt: 0
+  endpoints:
+    subdomains:
+    - name: ""
+      protocol: tcp
+      connectionTemplate: "ncat --ssl {{ .host }} 1337"
+  resources:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: "d"
+      labels:
+        challenges.ctfpilot.com/type: "{{ CHALLENGE_TYPE }}"
+        challenges.ctfpilot.com/name: "{{ CHALLENGE_NAME }}"
+        challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
+        flight.ctfpilot.com/id: "{{ .DeploymentID }}"
+        ctfpilot.com/component: "instanced-challenge"
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          flight.ctfpilot.com/id: "{{ .DeploymentID }}"
+      template:
+        metadata:
+          labels:
+            challenges.ctfpilot.com/type: "{{ CHALLENGE_TYPE }}"
+            challenges.ctfpilot.com/name: "{{ CHALLENGE_NAME }}"
+            challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
+            flight.ctfpilot.com/id: "{{ .DeploymentID }}"
+            ctfpilot.com/component: "instanced-challenge"
+        spec:
+          enableServiceLinks: false
+          automountServiceAccountToken: false
+          imagePullSecrets:
+          - name: dockerconfigjson-github-com
+          dnsPolicy: None
+          dnsConfig:
+            nameservers:
+            - 1.1.1.1
+            - 8.8.8.8
+          tolerations:
+          - key: "cluster.ctfpilot.com/node"
+            value: "scaler"
+            effect: "PreferNoSchedule"
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "cluster.ctfpilot.com/node"
+                    operator: In
+                    values:
+                    - scaler
+          containers:
+          - name: tcp
+            image: ghcr.io/{{ CHALLENGE_REPO }}-{{ DOCKER_IMAGE }}:{{ CHALLENGE_VERSION }}
+            imagePullPolicy: IfNotPresent
+            resources:
+              limits:
+                cpu: 200m
+                memory: 256Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+            ports:
+            - containerPort: 1337
+              name: tcp
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: "s"
+      labels:
+        challenges.ctfpilot.com/type: "{{ CHALLENGE_TYPE }}"
+        challenges.ctfpilot.com/name: "{{ CHALLENGE_NAME }}"
+        challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
+        flight.ctfpilot.com/id: "{{ .DeploymentID }}"
+        ctfpilot.com/component: "instanced-challenge"
+    spec:
+      selector:
+        flight.ctfpilot.com/id: "{{ .DeploymentID }}"
+      ports:
+      - port: 1337
+        name: tcp
+        targetPort: tcp
+  - apiVersion: traefik.io/v1alpha1
+    kind: IngressRouteTCP
+    metadata:
+      name: "i"
+      labels:
+        challenges.ctfpilot.com/type: "{{ CHALLENGE_TYPE }}"
+        challenges.ctfpilot.com/name: "{{ CHALLENGE_NAME }}"
+        challenges.ctfpilot.com/category: "{{ CHALLENGE_CATEGORY }}"
+        flight.ctfpilot.com/id: "{{ .DeploymentID }}"
+        ctfpilot.com/component: "instanced-challenge"
+      annotations:
+        traefik.ingress.kubernetes.io/router.priority: "100"
+    spec:
+      entryPoints:
+      - tcp-challenges
+      routes:
+      - match: HostSNI(`{{ .DeploymentID }}.{{ .Domain }}`)
+        services:
+        - name: "s-{{ .DeploymentID }}"
+          port: 1337
+      tls:
+        secretName: kubectf-cert-challs
