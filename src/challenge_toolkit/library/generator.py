@@ -264,8 +264,8 @@ This file should contain the steps to solve the challenge.""")
         return True
     
     def instanced_template_source_file_exists(self):
-        return self.check_if_dir_exists(os.path.join(Utils.get_template_dir(), "instanced-web-k8s.yml")) and \
-               self.check_if_dir_exists(os.path.join(Utils.get_template_dir(), "instanced-tcp-k8s.yml"))
+        return self.check_if_dir_exists(os.path.join(Utils.get_template_dir(), "flight-ops-web-k8s.yml")) and \
+               self.check_if_dir_exists(os.path.join(Utils.get_template_dir(), "flight-ops-tcp-k8s.yml"))
     
     def instanced_template_file_exists(self):
         return self.check_if_dir_exists(os.path.join(self.dir_template, "k8s.yml"))
@@ -287,9 +287,9 @@ This file should contain the steps to solve the challenge.""")
             return False
         
         if self.challenge.instanced_type == "web":
-            source_file = os.path.join(Utils.get_template_dir(), "instanced-web-k8s.yml")
+            source_file = os.path.join(Utils.get_template_dir(), "flight-ops-web-k8s.yml")
         elif self.challenge.instanced_type == "tcp":
-            source_file = os.path.join(Utils.get_template_dir(), "instanced-tcp-k8s.yml")
+            source_file = os.path.join(Utils.get_template_dir(), "flight-ops-tcp-k8s.yml")
         else:
             print(f"Instanced type {self.challenge.instanced_type} is not supported for instanced challenges.")
             return False
